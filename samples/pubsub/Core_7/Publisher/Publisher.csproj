@@ -7,5 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
     <PackageReference Include="NServiceBus" Version="7.*" />
+    <PackageReference Include="NServiceBus.AmazonSQS" Version="4.5.0-sns-pub-sub.1" />
   </ItemGroup>
 </Project>

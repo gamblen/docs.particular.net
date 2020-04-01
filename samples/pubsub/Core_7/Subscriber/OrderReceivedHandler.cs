@@ -13,3 +13,15 @@ public class OrderReceivedHandler :
         return Task.CompletedTask;
     }
 }
+
+public class IOrderReceivedHandler :
+    IHandleMessages<IOrderReceived>
+{
+    static ILog log = LogManager.GetLogger<IOrderReceivedHandler>();
+
+    public Task Handle(IOrderReceived message, IMessageHandlerContext context)
+    {
+        log.Info($"Subscriber has received IOrderReceived event with OrderId {message.OrderId}.");
+        return Task.CompletedTask;
+    }
+}

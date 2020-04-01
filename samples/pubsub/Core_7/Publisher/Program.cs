@@ -8,8 +8,7 @@ static class Program
     {
         Console.Title = "Samples.PubSub.Publisher";
         var endpointConfiguration = new EndpointConfiguration("Samples.PubSub.Publisher");
-        endpointConfiguration.UsePersistence<LearningPersistence>();
-        endpointConfiguration.UseTransport<LearningTransport>();
+        var transport = endpointConfiguration.UseTransport<SqsTransport>();
 
         endpointConfiguration.SendFailedMessagesTo("error");
         endpointConfiguration.EnableInstallers();
@@ -25,6 +24,8 @@ static class Program
     static async Task Start(IEndpointInstance endpointInstance)
     {
         Console.WriteLine("Press '1' to publish the OrderReceived event");
+        Console.WriteLine("Press '2' to publish multiple the OrderReceived event");
+        Console.WriteLine("Press '3' to publish the IOrderReceived event");
         Console.WriteLine("Press any other key to exit");
 
         #region PublishLoop
@@ -42,6 +43,27 @@ static class Program
                     OrderId = orderReceivedId
                 };
                 await endpointInstance.Publish(orderReceived)
+                    .ConfigureAwait(false);
+                Console.WriteLine($"Published OrderReceived Event with Id {orderReceivedId}.");
+            }
+            else if (key.Key == ConsoleKey.D2)
+            {
+                for (var i = 0; i < 100; i++)
+                {
+                    var orderReceived = new OrderReceived
+                    {
+                        OrderId = orderReceivedId
+                    };
+                    _ = endpointInstance.Publish(orderReceived);
+                }
+            }
+            else if (key.Key == ConsoleKey.D3)
+            {
+                var orderReceived = new OrderReceived
+                {
+                    OrderId = orderReceivedId
+                };
+                await endpointInstance.Publish<IOrderReceived>(m => { m.OrderId = orderReceivedId; })
                     .ConfigureAwait(false);
                 Console.WriteLine($"Published OrderReceived Event with Id {orderReceivedId}.");
             }
