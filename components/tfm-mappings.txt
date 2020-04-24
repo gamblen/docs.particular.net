@@ -1,4 +1,5 @@
 # Mappings from target framework moniker (TFM) to display name
+# Format: TargetFrameworkMoniker: Display Name
 net45: .NET Framework 4.5
 net452: .NET Framework 4.5.2
 net46: .NET Framework 4.6
